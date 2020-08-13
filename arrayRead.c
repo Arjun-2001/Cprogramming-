@@ -11,15 +11,19 @@ void checkNum(int user, int numARR[],int size);
 int checkNumBin(int user, int numARR[],int size);
 
 int main(){
+
 		  //declare array and var
 		  int numARR[SEL];
 		  int numCurrent;
 		  int i,x;
 		  int user;
+			clock_t start;
+			clock_t end;
+			float timeElapsed;
 
+			start = clock();
 			initArray(numARR,SEL);
         // printArray(numARR,SEL);
-
 		  //ask user for search
 		  printf("\n select a number to search:");
 		  scanf("%d",&user);
@@ -31,6 +35,10 @@ int main(){
 			//	printArray(numARR,SEL);
 			checkNum(user,numARR,SEL);
 			checkNumBin(user,numARR,SEL);
+			
+			end = clock();
+			timeElapsed= (end - start)/CLOCKS_PER_SEC;
+			printf("\n##TIME BENCHMARK:%f## \n",timeElapsed);
 }
 
 void printArray(int numARR[],int size){
@@ -81,9 +89,9 @@ int low = 0;
 		}else{
 				if(user<numARR[index]){
 				high = index-1;
-		}else{
-				low = index+1;
-		}
+				}else{
+						low = index+1;
+				}
 		}
 	}
 	printf("binary search for (%d) could not be found\n\n",user);
