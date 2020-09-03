@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <ncurses.h>
 #define undetermined 10
 #define stdNum 3
 #define TRUE 1
@@ -38,6 +39,7 @@ int main(){
      printf("OPTION 3: RESIZE\n");
      printf("OPTION 4: PRINT\n");
 	  printf("OPTION 5: EXIT\n");
+	  printf("current size is :%d\n",sizeCur);
      scanf("%d",&option);
 //ADD TO LIST MENU OPTION
 if(option == 1){
@@ -49,8 +51,6 @@ if(option == 1){
 		list[0].valid = TRUE;
 		startPos = 0;
 		sizeCur++;
-		printf("current size is :%d",sizeCur);
-
 	}else{
 //SECOND PERSION ADDING TO LIST AT SECOND POSTION ONWARDS
 		printf("\n**AGE of PERSON?: ");
@@ -64,32 +64,54 @@ if(option == 1){
 				}
 			}	
 	}
+	if(size==sizeCur){
+		printf("List full");
+	}
 //RESETTING LINKS AFTER EVERY ADD ACOUNTING FOR VARIABLE SIZE
-	if(sizeCur>1){
+	if(sizeCur>=0){
 		for(i=0;i<sizeCur;i++){
 			list[i].link = i+1;
 			list[sizeCur-1].link = -1;
 		}
 	}
 }
+system("clear");
 //DELETE MENU OPTION
 if(option == 2){
-	printf("\nPERSON# DELETE: ");
-	scanf("%d",&delete);
 //IF LIST EMPTY PRINT ERROR MSG	
 	if(sizeCur == 0){
+		system("clear");
 		printf("\nlist empty\n");
 	}
+printf("select element");
+scanf("%d",&delete);
 	//IF LIST HAS 1 ELEMENT RESET ALL VALUES AND RESET SIZECUR AND STARTPOS TO 0
-	if(sizeCur == 1){
+	if(sizeCur == 1||delete == 1){
 		list[0].age = -1;
 		startPos = 0;
-		sizeCur = 0;
-			for(i=0;i<size;i++){
-				list[i].valid = FALSE;
-			}
+		list[0].valid = FALSE;
+		sizeCur--;
 	}
-}
+	}
+//IF LIST HAS MORE THAN ONE ELEMENT AND MIDDLE IS BEING DELETED
+	if(delete == size){
+		list[size-2].link = -1;
+		list[size-1].age= -1;
+		list[size-1].valid= FALSE;
+		list[size-1].link= -1;
+		sizeCur--;
+	}
+	if(delete>1 && delete<size){
+		list[delete-1].valid= FALSE;
+		list[delete-2].link = list[delete-1].link;
+		list[delete-1].link = -1;
+		for(i=startPos;i<sizeCur;i++){
+			list[i].link= i+1;
+		}
+		list[sizeCur-1].link=-1;
+		sizeCur--;
+	}
+
 //RESIZE MENU OPTION
 if(option == 3){
 	printf("NEW SIZE: ");
@@ -98,13 +120,15 @@ if(option == 3){
 //PRINT MENU OPTION
 // LOOP CHECKS FOR TRUE VALIDS AND PRINTS THOSE VALUES
 if(option == 4){
-	for(i=0;i<sizeCur;i++){
-		if(list[i].valid == TRUE && list[i].age!=0){
-  			printf("person = %d\n",list[i].age);
-   		printf("link = %d\n",list[i].link);
-			printf("valid = %d\n",list[i].valid);
-		}
-  	}
+	if(sizeCur==0){
+		system("clear");
+		printf("No list to print");
+	}
+		for(i=startPos;i<size;i++){
+			if(list[i].valid == TRUE && list[i].age!=-1){
+  				printf("|AGE:%d |LINK:%d |VALID:%d |\n",list[i].age,list[i].link, list[i].valid);
+			}
+	  	}
 }
 //CLOSE THE WHILE LOOP
 }
