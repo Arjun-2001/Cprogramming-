@@ -122,9 +122,9 @@ scanf("%d",&delete);
 		list[delete-1].valid= FALSE;
 		list[delete-2].link = list[delete-1].link;
 		list[delete-1].link = -1;
-		for(i=startPos;i<sizeCur;i++){
+		for(i=0;i<sizeCur;i++){
 			if(list[i].valid==TRUE){
-				list[i].link= i+1;
+				list[i].link= linkSet++;
 			}
 		}
 		list[sizeCur-1].link=-1;
